@@ -1,8 +1,8 @@
-import { Router } from 'express';
+import { Router } from 'express'
 
-const router = Router();
+const router = Router()
 
-router.get('/', (req, res) => {
+router.get('/', (_req, res) => {
   res.json({
     message: 'FlowTrack API',
     version: '1.0.0',
@@ -12,9 +12,9 @@ router.get('/', (req, res) => {
       teams: '/api/teams',
       projects: '/api/projects',
       reports: '/api/reports',
-      analytics: '/api/analytics'
-    }
-  });
-});
+      analytics: '/api/analytics',
+    },
+  })
+})
 
-export default router;
+export default router
