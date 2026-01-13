@@ -10,7 +10,7 @@
     "lint:fix": "biome lint --write",
     "format": "biome format --write",
     "typecheck": "tsc --noEmit",
-    "validate": "pnpm format && pnpm lint && pnpm typecheck"
+    "validate": "npm run format && npm run lint && npm run typecheck"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
