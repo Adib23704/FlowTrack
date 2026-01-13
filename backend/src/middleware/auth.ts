@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express'
-import { verifyToken } from '../utils/jwt'
 import User, { type IUser } from '../models/User'
+import { verifyToken } from '../utils/jwt'
 
 export interface AuthRequest extends Request {
   user?: IUser

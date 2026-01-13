@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
+import type { AuthRequest } from '../middleware/auth'
 import User from '../models/User'
 import { generateToken } from '../utils/jwt'
-import type { AuthRequest } from '../middleware/auth'
 
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {

@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import activityRoutes from './activities'
 import analyticsRoutes from './analytics'
 import authRoutes from './auth'
 import projectRoutes from './projects'
@@ -19,6 +20,7 @@ router.get('/', (_req, res) => {
       projects: '/api/projects',
       reports: '/api/reports',
       analytics: '/api/analytics',
+      activities: '/api/activities',
     },
   })
 })
@@ -29,5 +31,6 @@ router.use('/teams', teamRoutes)
 router.use('/projects', projectRoutes)
 router.use('/reports', reportRoutes)
 router.use('/analytics', analyticsRoutes)
+router.use('/activities', activityRoutes)
 
 export default router

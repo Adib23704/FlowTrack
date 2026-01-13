@@ -2,8 +2,8 @@ import { Router } from 'express'
 import {
   getDashboardStats,
   getHighLoadTeams,
-  getProjectTrends,
   getProjectsAnalytics,
+  getProjectTrends,
   getUnhappyClients,
 } from '../controllers/analyticsController'
 import { authenticate } from '../middleware/auth'
