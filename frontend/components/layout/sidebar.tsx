@@ -1,8 +1,7 @@
 'use client'
 
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import {
+  Activity,
   BarChart3,
   ClipboardList,
   FolderKanban,
@@ -11,9 +10,11 @@ import {
   Users,
   UsersRound,
 } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { useAuth } from '@/hooks/use-auth'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
+import { useAuth } from '@/hooks/use-auth'
+import { cn } from '@/lib/utils'
 
 interface NavItem {
   label: string
@@ -54,6 +55,12 @@ const navItems: NavItem[] = [
     label: 'Analytics',
     href: '/analytics',
     icon: <BarChart3 className="h-5 w-5" />,
+    roles: ['admin'],
+  },
+  {
+    label: 'Activity',
+    href: '/activity',
+    icon: <Activity className="h-5 w-5" />,
     roles: ['admin'],
   },
 ]

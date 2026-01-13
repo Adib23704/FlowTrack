@@ -1,13 +1,13 @@
 'use client'
 
+import { BarChart3 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { BarChart3 } from 'lucide-react'
-import { useAuth } from '@/hooks/use-auth'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useAuth } from '@/hooks/use-auth'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -62,9 +62,7 @@ export default function LoginPage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <div className="rounded-md bg-red-50 p-3 text-sm text-red-600">{error}</div>
-            )}
+            {error && <div className="rounded-md bg-red-50 p-3 text-sm text-red-600">{error}</div>}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input

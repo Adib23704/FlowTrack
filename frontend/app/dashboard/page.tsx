@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import { FolderKanban, Users, UsersRound } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { PageHeader, StatsCard } from '@/components/shared'
 import { useAuth } from '@/hooks/use-auth'
@@ -43,22 +43,22 @@ export default function DashboardPage() {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           <StatsCard
             title="Total Projects"
-            value={isLoading ? '...' : stats?.totalProjects ?? 0}
+            value={isLoading ? '...' : (stats?.totalProjects ?? 0)}
             icon={<FolderKanban className="h-8 w-8" />}
           />
           <StatsCard
             title="Active Projects"
-            value={isLoading ? '...' : stats?.activeProjects ?? 0}
+            value={isLoading ? '...' : (stats?.activeProjects ?? 0)}
             icon={<FolderKanban className="h-8 w-8" />}
           />
           <StatsCard
             title="Teams"
-            value={isLoading ? '...' : stats?.totalTeams ?? 0}
+            value={isLoading ? '...' : (stats?.totalTeams ?? 0)}
             icon={<UsersRound className="h-8 w-8" />}
           />
           <StatsCard
             title="Clients"
-            value={isLoading ? '...' : stats?.totalClients ?? 0}
+            value={isLoading ? '...' : (stats?.totalClients ?? 0)}
             icon={<Users className="h-8 w-8" />}
           />
         </div>

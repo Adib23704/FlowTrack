@@ -1,5 +1,5 @@
-import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
+import { cn } from '@/lib/utils'
 import type { LoadRisk, ProjectStatus } from '@/types'
 
 interface StatusBadgeProps {

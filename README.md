@@ -54,16 +54,17 @@ Open http://localhost:3000 and log in with one of the demo accounts.
 
 **backend/.env**
 ```
-PORT=5000
+PORT=3001
 MONGODB_URI=mongodb://localhost:27017/flowtrack
 JWT_SECRET=your-super-secret-jwt-key-change-in-production
 JWT_EXPIRES_IN=7d
 NODE_ENV=development
+FRONTEND_URL=http://localhost:3000
 ```
 
 **frontend/.env.local**
 ```
-NEXT_PUBLIC_API_URL=http://localhost:5000/api
+NEXT_PUBLIC_API_URL=http://localhost:3001/api
 ```
 
 ## API Overview
