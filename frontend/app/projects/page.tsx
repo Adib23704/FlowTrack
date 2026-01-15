@@ -42,14 +42,14 @@ export default function ProjectsPage() {
   )
 
   const getTeamName = (project: Project) => {
-    if (typeof project.teamId === 'object') {
+    if (typeof project.teamId === 'object' && project.teamId) {
       return project.teamId.name
     }
     return 'Unassigned'
   }
 
   const getClientName = (project: Project) => {
-    if (typeof project.clientId === 'object') {
+    if (typeof project.clientId === 'object' && project.clientId) {
       return project.clientId.name
     }
     return 'No client'

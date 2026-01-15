@@ -61,8 +61,14 @@ export function ProjectFormDialog({
         description: project.description,
         startDate: project.timeline.startDate.split('T')[0],
         endDate: project.timeline.endDate.split('T')[0],
-        teamId: typeof project.teamId === 'object' ? project.teamId._id : project.teamId,
-        clientId: typeof project.clientId === 'object' ? project.clientId._id : project.clientId,
+        teamId:
+          typeof project.teamId === 'object' && project.teamId
+            ? project.teamId._id
+            : (project.teamId ?? ''),
+        clientId:
+          typeof project.clientId === 'object' && project.clientId
+            ? project.clientId._id
+            : (project.clientId ?? ''),
         status: project.status,
       })
     } else {

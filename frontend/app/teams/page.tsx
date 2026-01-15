@@ -103,19 +103,21 @@ export default function TeamsPage() {
                     <p className="text-sm text-gray-400">No members</p>
                   ) : (
                     <div className="flex flex-wrap gap-2">
-                      {team.members.map(member => (
-                        <div
-                          key={member._id}
-                          className="flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1"
-                        >
-                          <Avatar className="h-6 w-6">
-                            <AvatarFallback className="text-xs">
-                              {member.name.charAt(0).toUpperCase()}
-                            </AvatarFallback>
-                          </Avatar>
-                          <span className="text-sm">{member.name}</span>
-                        </div>
-                      ))}
+                      {team.members
+                        .filter(member => member !== null)
+                        .map(member => (
+                          <div
+                            key={member._id}
+                            className="flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1"
+                          >
+                            <Avatar className="h-6 w-6">
+                              <AvatarFallback className="text-xs">
+                                {member.name?.charAt(0).toUpperCase() ?? '?'}
+                              </AvatarFallback>
+                            </Avatar>
+                            <span className="text-sm">{member.name ?? 'Unknown'}</span>
+                          </div>
+                        ))}
                     </div>
                   )}
                 </div>

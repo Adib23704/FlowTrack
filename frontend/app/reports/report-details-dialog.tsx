@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import type { Project, User as UserType } from '@/types'
+import type { Project } from '@/types'
 
 interface TeamReportDetails {
   _id: string
@@ -107,9 +107,7 @@ export function ReportDetailsDialog({
         <div className="space-y-4">
           <div className="rounded-lg bg-gray-50 p-4">
             <div className="mb-3 flex items-center justify-between">
-              <h3 className="font-semibold">
-                {report.projectId?.name ?? 'Unknown Project'}
-              </h3>
+              <h3 className="font-semibold">{report.projectId?.name ?? 'Unknown Project'}</h3>
               <Badge variant="outline">
                 W{report.weekNumber}/{report.year}
               </Badge>
@@ -159,10 +157,7 @@ export function ReportDetailsDialog({
                   </span>
                 </div>
 
-                <RatingDisplay
-                  value={teamReport.onTimeConfidence}
-                  label="On-Time Confidence"
-                />
+                <RatingDisplay value={teamReport.onTimeConfidence} label="On-Time Confidence" />
               </div>
 
               <div>
@@ -171,7 +166,8 @@ export function ReportDetailsDialog({
                   <ul className="space-y-2">
                     {teamReport.blockers.map((blocker, index) => (
                       <li
-                        key={index}
+                        // biome-ignore lint/suspicious/noArrayIndexKey: acceptable in this case since blockers are static text
+                        key={`${blocker}-${index}`}
                         className="flex items-start gap-2 rounded-md bg-red-50 p-2 text-sm text-red-700"
                       >
                         <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
@@ -189,14 +185,8 @@ export function ReportDetailsDialog({
           {clientReview && (
             <>
               <div className="space-y-3">
-                <RatingDisplay
-                  value={clientReview.deliveryQuality}
-                  label="Delivery Quality"
-                />
-                <RatingDisplay
-                  value={clientReview.responsiveness}
-                  label="Responsiveness"
-                />
+                <RatingDisplay value={clientReview.deliveryQuality} label="Delivery Quality" />
+                <RatingDisplay value={clientReview.responsiveness} label="Responsiveness" />
                 <RatingDisplay
                   value={clientReview.overallSatisfaction}
                   label="Overall Satisfaction"

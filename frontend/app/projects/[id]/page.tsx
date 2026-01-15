@@ -53,17 +53,17 @@ export default function ProjectDetailPage() {
   }
 
   const getTeamName = () => {
-    if (project && typeof project.teamId === 'object') {
+    if (project && typeof project.teamId === 'object' && project.teamId) {
       return project.teamId.name
     }
-    return 'Unknown'
+    return 'Unassigned'
   }
 
   const getClientName = () => {
-    if (project && typeof project.clientId === 'object') {
+    if (project && typeof project.clientId === 'object' && project.clientId) {
       return project.clientId.name
     }
-    return 'Unknown'
+    return 'No client'
   }
 
   if (isLoading) {

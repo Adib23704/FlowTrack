@@ -175,7 +175,9 @@ export default function DashboardPage() {
                       {project.name}
                     </h3>
                     <p className="mt-1 text-xs text-slate-500">
-                      {typeof project.clientId === 'object' ? project.clientId.name : 'No client'}
+                      {typeof project.clientId === 'object' && project.clientId
+                        ? project.clientId.name
+                        : 'No client'}
                     </p>
                   </div>
                   <span

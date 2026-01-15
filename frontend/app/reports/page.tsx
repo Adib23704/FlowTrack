@@ -1,6 +1,6 @@
 'use client'
 
-import { Eye, Plus, Trash2 } from 'lucide-react'
+import { Eye, Plus } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { EmptyState, PageHeader } from '@/components/shared'
@@ -41,7 +41,9 @@ export default function ReportsPage() {
   const [showTeamReportDialog, setShowTeamReportDialog] = useState(false)
   const [showClientReviewDialog, setShowClientReviewDialog] = useState(false)
   const [showDetailsDialog, setShowDetailsDialog] = useState(false)
-  const [selectedReport, setSelectedReport] = useState<TeamReportWithProject | ClientReviewWithProject | null>(null)
+  const [selectedReport, setSelectedReport] = useState<
+    TeamReportWithProject | ClientReviewWithProject | null
+  >(null)
   const [detailsType, setDetailsType] = useState<'team' | 'client'>('team')
   const [isDeleting, setIsDeleting] = useState(false)
 
@@ -88,9 +90,10 @@ export default function ReportsPage() {
 
     setIsDeleting(true)
     try {
-      const endpoint = detailsType === 'team'
-        ? `/reports/team/${selectedReport._id}`
-        : `/reports/client/${selectedReport._id}`
+      const endpoint =
+        detailsType === 'team'
+          ? `/reports/team/${selectedReport._id}`
+          : `/reports/client/${selectedReport._id}`
       await api.delete(endpoint, token)
       setShowDetailsDialog(false)
       setSelectedReport(null)
@@ -180,9 +183,7 @@ export default function ReportsPage() {
                           <TableCell>
                             W{report.weekNumber}/{report.year}
                           </TableCell>
-                          <TableCell>
-                            {report.submittedBy?.name ?? 'Unknown'}
-                          </TableCell>
+                          <TableCell>{report.submittedBy?.name ?? 'Unknown'}</TableCell>
                           <TableCell>
                             <span className="text-green-600">{report.tasksCompleted}</span>
                             {' / '}
@@ -267,9 +268,7 @@ export default function ReportsPage() {
                           <TableCell>
                             W{review.weekNumber}/{review.year}
                           </TableCell>
-                          <TableCell>
-                            {review.submittedBy?.name ?? 'Unknown'}
-                          </TableCell>
+                          <TableCell>{review.submittedBy?.name ?? 'Unknown'}</TableCell>
                           <TableCell>
                             <RatingDisplay value={review.deliveryQuality} />
                           </TableCell>

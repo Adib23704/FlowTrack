@@ -177,13 +177,17 @@ export default function AnalyticsPage() {
                   <AlertTriangle className="h-5 w-5 text-red-500 mt-0.5" />
                   <div>
                     <p className="font-medium">
-                      {typeof flag.projectId === 'object' ? flag.projectId.name : 'Unknown Project'}
+                      {typeof flag.projectId === 'object' && flag.projectId
+                        ? flag.projectId.name
+                        : 'Unknown Project'}
                     </p>
                     <p className="text-sm text-gray-600">{flag.comment || 'No comment provided'}</p>
                     <p className="text-xs text-gray-400 mt-1">
                       Flagged by{' '}
-                      {typeof flag.submittedBy === 'object' ? flag.submittedBy.name : 'Unknown'} on{' '}
-                      {new Date(flag.createdAt).toLocaleDateString()}
+                      {typeof flag.submittedBy === 'object' && flag.submittedBy
+                        ? flag.submittedBy.name
+                        : 'Unknown'}{' '}
+                      on {new Date(flag.createdAt).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
