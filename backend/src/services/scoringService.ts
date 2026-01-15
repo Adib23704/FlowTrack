@@ -68,3 +68,30 @@ export const updateProjectScores = async (
 
   await project.save()
 }
+
+export const recalculateProjectScores = async (
+  projectId: string,
+  TeamReport: typeof import('../models/TeamReport').default,
+  ClientReview: typeof import('../models/ClientReview').default
+): Promise<void> => {
+  const project = await Project.findById(projectId)
+  if (!project) return
+
+  const latestTeamReport = await TeamReport.findOne({ projectId }).sort({ createdAt: -1 })
+  if (latestTeamReport) {
+    project.deliveryReliabilityScore = calculateDeliveryReliabilityScore(latestTeamReport)
+    project.teamLoadRisk = calculateTeamLoadRisk(latestTeamReport)
+  } else {
+    project.deliveryReliabilityScore = 0
+    project.teamLoadRisk = 'low'
+  }
+
+  const latestClientReview = await ClientReview.findOne({ projectId }).sort({ createdAt: -1 })
+  if (latestClientReview) {
+    project.clientHappinessIndex = calculateClientHappinessIndex(latestClientReview)
+  } else {
+    project.clientHappinessIndex = 0
+  }
+
+  await project.save()
+}

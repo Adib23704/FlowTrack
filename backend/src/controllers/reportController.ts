@@ -4,7 +4,7 @@ import Activity from '../models/Activity'
 import ClientReview from '../models/ClientReview'
 import Project, { type IProject } from '../models/Project'
 import TeamReport from '../models/TeamReport'
-import { updateProjectScores } from '../services/scoringService'
+import { recalculateProjectScores, updateProjectScores } from '../services/scoringService'
 
 function getWeekNumber(date: Date): number {
   const firstDayOfYear = new Date(date.getFullYear(), 0, 1)
@@ -253,6 +253,50 @@ export const getPendingReports = async (req: AuthRequest, res: Response): Promis
     }
   } catch (error) {
     console.error('Get pending reports error:', error)
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
+export const deleteTeamReport = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params
+
+    const report = await TeamReport.findById(id)
+    if (!report) {
+      res.status(404).json({ message: 'Team report not found' })
+      return
+    }
+
+    const projectId = report.projectId.toString()
+    await TeamReport.findByIdAndDelete(id)
+
+    await recalculateProjectScores(projectId, TeamReport, ClientReview)
+
+    res.json({ message: 'Team report deleted successfully' })
+  } catch (error) {
+    console.error('Delete team report error:', error)
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
+export const deleteClientReview = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params
+
+    const review = await ClientReview.findById(id)
+    if (!review) {
+      res.status(404).json({ message: 'Client review not found' })
+      return
+    }
+
+    const projectId = review.projectId.toString()
+    await ClientReview.findByIdAndDelete(id)
+
+    await recalculateProjectScores(projectId, TeamReport, ClientReview)
+
+    res.json({ message: 'Client review deleted successfully' })
+  } catch (error) {
+    console.error('Delete client review error:', error)
     res.status(500).json({ message: 'Server error' })
   }
 }

@@ -1,5 +1,7 @@
 import { Router } from 'express'
 import {
+  deleteClientReview,
+  deleteTeamReport,
   getClientReviews,
   getPendingReports,
   getTeamReports,
@@ -7,7 +9,7 @@ import {
   submitTeamReport,
 } from '../controllers/reportController'
 import { authenticate } from '../middleware/auth'
-import { isClient, isTeamMember } from '../middleware/roleCheck'
+import { isAdmin, isClient, isTeamMember } from '../middleware/roleCheck'
 
 const router = Router()
 
@@ -18,5 +20,7 @@ router.get('/team', getTeamReports)
 router.get('/client', getClientReviews)
 router.post('/team', isTeamMember, submitTeamReport)
 router.post('/client', isClient, submitClientReview)
+router.delete('/team/:id', isAdmin, deleteTeamReport)
+router.delete('/client/:id', isAdmin, deleteClientReview)
 
 export default router
