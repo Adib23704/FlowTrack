@@ -20,7 +20,7 @@ export interface Team {
   updatedAt: string
 }
 
-export type ProjectStatus = 'planning' | 'in_progress' | 'completed' | 'on_hold'
+export type ProjectStatus = 'planning' | 'active' | 'in_progress' | 'completed' | 'on_hold'
 export type LoadRisk = 'low' | 'medium' | 'high'
 
 export interface Project {

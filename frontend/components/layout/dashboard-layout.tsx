@@ -28,8 +28,8 @@ export function DashboardLayout({ children, allowedRoles }: DashboardLayoutProps
 
   if (isLoading) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+      <div className="flex h-screen items-center justify-center bg-slate-50">
+        <div className="h-8 w-8 animate-spin rounded-full border-[3px] border-slate-200 border-t-indigo-600" />
       </div>
     )
   }
@@ -43,9 +43,11 @@ export function DashboardLayout({ children, allowedRoles }: DashboardLayoutProps
   }
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen bg-slate-50">
       <Sidebar />
-      <main className="flex-1 overflow-auto bg-gray-50 p-8">{children}</main>
+      <main className="flex-1 overflow-auto">
+        <div className="mx-auto max-w-7xl px-6 py-8">{children}</div>
+      </main>
     </div>
   )
 }

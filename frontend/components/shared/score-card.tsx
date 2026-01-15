@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 
 interface ScoreCardProps {
@@ -6,22 +5,16 @@ interface ScoreCardProps {
   score: number
   maxScore?: number
   description?: string
-  trend?: 'up' | 'down' | 'stable'
+  size?: 'sm' | 'md' | 'lg'
   className?: string
 }
 
-function getScoreColor(score: number): string {
-  if (score >= 80) return 'text-green-600'
-  if (score >= 60) return 'text-yellow-600'
-  if (score >= 40) return 'text-orange-600'
-  return 'text-red-600'
-}
-
-function getScoreBg(score: number): string {
-  if (score >= 80) return 'bg-green-100'
-  if (score >= 60) return 'bg-yellow-100'
-  if (score >= 40) return 'bg-orange-100'
-  return 'bg-red-100'
+function getScoreColor(score: number): { text: string; bg: string; ring: string } {
+  if (score >= 80)
+    return { text: 'text-emerald-600', bg: 'bg-emerald-500', ring: 'ring-emerald-100' }
+  if (score >= 60) return { text: 'text-amber-600', bg: 'bg-amber-500', ring: 'ring-amber-100' }
+  if (score >= 40) return { text: 'text-orange-600', bg: 'bg-orange-500', ring: 'ring-orange-100' }
+  return { text: 'text-red-600', bg: 'bg-red-500', ring: 'ring-red-100' }
 }
 
 export function ScoreCard({
@@ -29,28 +22,56 @@ export function ScoreCard({
   score,
   maxScore = 100,
   description,
+  size = 'md',
   className,
 }: ScoreCardProps) {
   const percentage = Math.round((score / maxScore) * 100)
+  const colors = getScoreColor(percentage)
+
+  const sizeStyles = {
+    sm: { card: 'p-4', title: 'text-xs', score: 'text-2xl', bar: 'h-1.5' },
+    md: { card: 'p-5', title: 'text-sm', score: 'text-3xl', bar: 'h-2' },
+    lg: { card: 'p-6', title: 'text-sm', score: 'text-4xl', bar: 'h-2.5' },
+  }
+
+  const styles = sizeStyles[size]
 
   return (
-    <Card className={cn('', className)}>
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-medium text-gray-600">{title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="flex items-end gap-2">
-          <span className={cn('text-3xl font-bold', getScoreColor(percentage))}>{score}</span>
-          <span className="mb-1 text-sm text-gray-500">/ {maxScore}</span>
+    <div
+      className={cn(
+        'rounded-xl border border-slate-200 bg-white transition-all hover:shadow-md',
+        styles.card,
+        className
+      )}
+    >
+      <div className="mb-3 flex items-center justify-between">
+        <p className={cn('font-medium text-slate-500', styles.title)}>{title}</p>
+        <div
+          className={cn('rounded-full px-2 py-0.5 text-xs font-medium', colors.ring, colors.text)}
+        >
+          {percentage >= 80
+            ? 'Excellent'
+            : percentage >= 60
+              ? 'Good'
+              : percentage >= 40
+                ? 'Fair'
+                : 'Needs work'}
         </div>
-        <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-gray-200">
-          <div
-            className={cn('h-full rounded-full transition-all', getScoreBg(percentage))}
-            style={{ width: `${percentage}%` }}
-          />
-        </div>
-        {description && <p className="mt-2 text-xs text-gray-500">{description}</p>}
-      </CardContent>
-    </Card>
+      </div>
+
+      <div className="flex items-baseline gap-1">
+        <span className={cn('font-bold tracking-tight', styles.score, colors.text)}>{score}</span>
+        <span className="text-sm text-slate-400">/ {maxScore}</span>
+      </div>
+
+      <div className={cn('mt-4 w-full overflow-hidden rounded-full bg-slate-100', styles.bar)}>
+        <div
+          className={cn('h-full rounded-full transition-all duration-500 ease-out', colors.bg)}
+          style={{ width: `${percentage}%` }}
+        />
+      </div>
+
+      {description && <p className="mt-3 text-xs text-slate-500">{description}</p>}
+    </div>
   )
 }
