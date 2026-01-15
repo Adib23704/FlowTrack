@@ -1,102 +1,132 @@
 # FlowTrack
 
-A delivery and team performance tracking platform. Managers get visibility into project health, team workload, and client satisfaction through automated scoring and weekly reports.
+Internal tool for tracking delivery performance and client satisfaction. Teams submit weekly reports, clients give feedback, and admins see everything in one dashboard.
 
-## Stack
+Built for a job assessment but tried to keep it production-ish.
 
-- **Frontend**: Next.js 14, TypeScript, Tailwind, shadcn/ui
-- **Backend**: Express, TypeScript, MongoDB, JWT auth
-- **Tooling**: Biome
+## Tech
 
-## Quick Start
+- Next.js 14 + Tailwind + shadcn/ui (frontend)
+- Express + MongoDB + JWT (backend)
+- TypeScript everywhere, Biome for linting
+
+## Getting Started
+
+You'll need MongoDB running locally (or use Atlas).
 
 ```bash
-# Backend
+# backend
 cd backend
-cp .env.example .env    # configure your MongoDB URI
-npm install
-npm run seed            # populate demo data
-npm run dev
+cp .env.example .env   # edit if needed
+npm i
+npm run seed           # creates demo users + sample data
+npm run dev            # runs on :3001
 
-# Frontend (new terminal)
+# frontend (new terminal)
 cd frontend
 cp .env.example .env.local
-npm install
-npm run dev
+npm i
+npm run dev            # runs on :3000
 ```
 
-Open http://localhost:3000 and log in with one of the demo accounts.
+Then hit http://localhost:3000
 
-## Demo Accounts
+## Test Accounts
 
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@flowtrack.com | admin123 |
-| Team | john@flowtrack.com | team123 |
-| Client | client@acme.com | client123 |
+```
+Admin:  admin@flowtrack.com / admin123
+Team:   john@flowtrack.com / team123
+Client: client@acme.com / client123
+```
 
-## How It Works
+## The Gist
 
-**Weekly cycle:**
-1. Team members submit progress reports (tasks done, blockers, workload)
-2. Clients submit satisfaction reviews (quality, responsiveness, overall rating)
-3. System calculates scores automatically
+Pretty simple workflow:
 
-**Two key metrics:**
+1. Admin creates projects, assigns teams and clients
+2. Every week, team members report their progress (tasks done, blockers, how confident they are about the deadline)
+3. Clients rate the delivery (quality, responsiveness, satisfaction)
+4. System crunches the numbers and flags problems
 
-- **Delivery Reliability Score** — Based on task completion rate, on-time confidence, and blocker count. A team reporting 80% tasks done with high confidence and no blockers scores well.
+## Scoring Logic
 
-- **Client Happiness Index** — Weighted average of satisfaction (60%), responsiveness (30%), and quality (10%). Flagging a problem applies a penalty.
+Had to come up with formulas for the three main metrics. Here's what I went with:
 
-**Load Risk** flags teams as High/Medium/Low based on workload level, pending tasks, and active blockers.
+### Delivery Reliability Score (0-100)
 
-## Environment Variables
+Measures how likely a team is to deliver on time.
 
-**backend/.env**
+```
+taskRatio = tasksCompleted / (tasksCompleted + tasksPending)
+confidenceScore = onTimeConfidence / 5
+blockerPenalty = min(blockersCount * 5, 25)
+
+score = (taskRatio * 40) + (confidenceScore * 60) - blockerPenalty
+```
+
+So if a team completed 8/10 tasks, confidence is 4/5, and they have 1 blocker:
+
+- taskRatio = 0.8 → contributes 32 points
+- confidence = 0.8 → contributes 48 points
+- blocker penalty = 5 points
+- Final: 75/100
+
+### Client Happiness Index (0-100)
+
+Weighted avg of client ratings with a penalty for flagged issues.
+
+```
+base = (satisfaction * 0.6) + (responsiveness * 0.3) + (quality * 0.1)
+normalized = (base / 5) * 100
+final = hasProblemFlag ? normalized * 0.7 : normalized
+```
+
+Satisfaction matters most (60%), then responsiveness (30%), quality least (10%). If they flag a problem, 30% penalty.
+
+### Team Load Risk
+
+Simple classification:
+
+- **High**: workload is "heavy" OR pending > completed OR blockers >= 3
+- **Medium**: workload is "normal" AND has some blockers
+- **Low**: everything else
+
+## Env Vars
+
+backend/.env:
+
 ```
 PORT=3001
 MONGODB_URI=mongodb://localhost:27017/flowtrack
-JWT_SECRET=your-super-secret-jwt-key-change-in-production
+JWT_SECRET=change-this-in-prod
 JWT_EXPIRES_IN=7d
-NODE_ENV=development
 FRONTEND_URL=http://localhost:3000
 ```
 
-**frontend/.env.local**
+frontend/.env.local:
+
 ```
 NEXT_PUBLIC_API_URL=http://localhost:3001/api
 ```
 
-## API Overview
+## API Routes
 
-All endpoints are prefixed with `/api`. Authentication uses Bearer tokens.
+Everything under `/api`, needs Bearer token except auth.
 
-| Resource | Access | Description |
-|----------|--------|-------------|
-| `/auth` | Public | Login, get current user |
-| `/users` | Admin | User CRUD |
-| `/teams` | Admin | Team CRUD, member management |
-| `/projects` | Role-based | Project CRUD (admin), view (all) |
-| `/reports/team` | Admin, Team | Submit/view team reports |
-| `/reports/client` | Admin, Client | Submit/view client reviews |
-| `/analytics` | Admin | Unhappy clients, high-load teams |
-| `/activities` | Admin | System-wide activity feed |
+- `POST /auth/login` - get token
+- `GET /auth/me` - current user
+- `/users` - admin only, user management
+- `/teams` - admin only, team CRUD
+- `/projects` - admin creates, everyone views their own
+- `/reports/team` - team submits weekly reports
+- `/reports/client` - clients submit reviews
+- `/analytics` - admin dashboard data
+- `/activities` - activity feed
 
-## Scripts
+## Live Demo
 
-```bash
-# Backend
-npm run dev       # development server
-npm run build     # compile TypeScript
-npm run start     # production server
-npm run seed      # seed database
-npm run lint      # run biome
-
-# Frontend
-npm run dev       # development server
-npm run build     # production build
-npm run lint      # run biome
-```
+- Main (Frontend): [https://flowtrack-adib.vercel.app](https://flowtrack-adib.vercel.app/)
+- Backend: [https://flowtrack-j53a.onrender.com](https://flowtrack-j53a.onrender.com/)
 
 ## License
 
