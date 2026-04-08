@@ -2,8 +2,6 @@
 
 Internal tool for tracking delivery performance and client satisfaction. Teams submit weekly reports, clients give feedback, and admins see everything in one dashboard.
 
-Built for a job assessment but tried to keep it production-ish.
-
 ## Tech
 
 - Next.js 14 + Tailwind + shadcn/ui (frontend)
