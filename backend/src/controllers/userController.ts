@@ -4,7 +4,7 @@ import User from '../models/User'
 
 export const getUsers = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { role } = req.query
+    const role = typeof req.query.role === 'string' ? req.query.role : undefined
     const filter = role ? { role } : {}
     const users = await User.find(filter).select('-password').populate('teamId')
     res.json(users)

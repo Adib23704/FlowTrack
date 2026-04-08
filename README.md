@@ -123,8 +123,8 @@ Everything under `/api`, needs Bearer token except auth.
 
 ## Live Demo
 
-- Main (Frontend): [https://flowtrack-adib.vercel.app](https://flowtrack-adib.vercel.app/)
-- Backend: [https://flowtrack-j53a.onrender.com](https://flowtrack-j53a.onrender.com/)
+- Main (Frontend): [https://flowtrack.adibdev.me](https://flowtrack.adibdev.me/)
+- Backend: [https://flowtrack-api.adibdev.me](https://flowtrack-api.adibdev.me/)
 
 ## License
 
